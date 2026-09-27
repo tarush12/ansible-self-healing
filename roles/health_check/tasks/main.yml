@@ -1,0 +1,25 @@
+---
+- name: nginx health status
+  command: systemctl is-active nginx
+  register: nginx_status
+  changed_when: false
+  failed_when: false
+
+- name: display nginx status
+  debug:
+    msg: "nginx status: {{nginx_status.stdout}}"
+
+- name: restart nginx status
+  service:
+    name: nginx
+    state: restarted
+  when: nginx_status.stdout != "active"
+
+- name: verify nginx
+  command: systemctl is-active nginx
+  register: nginx_recovery
+  changed_when: false
+
+- name: nginx restarted
+  debug:
+    msg: "nginx recovery status: {{nginx_recovery.stdout}}"

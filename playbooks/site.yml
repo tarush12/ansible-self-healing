@@ -1,0 +1,8 @@
+---
+- name: ansible configurtion
+  hosts: webservers
+  become: true
+
+  roles:
+    - nginx
+    - health_check
